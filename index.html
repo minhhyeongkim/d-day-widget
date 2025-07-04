@@ -4,48 +4,58 @@
   <meta charset="UTF-8">
   <title>D-Day 위젯</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
     }
 
     .widget {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 2px solid #ccc;
-      border-radius: 12px;
-      padding: 16px 20px;
+      aspect-ratio: 1 / 1;
+      width: 90vw;
       max-width: 400px;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    .left {
+    .top {
       text-align: left;
     }
 
-    .left h2 {
-      margin: 0 0 4px 0;
-      font-size: 20px;
-    }
-
-    .left .date {
-      font-size: 14px;
-    }
-
-    .right {
-      font-size: 28px;
-      font-weight: bold;
+    .bottom {
       text-align: right;
+      font-weight: bold;
+    }
+
+    .top h2,
+    .top .date,
+    .bottom {
+      margin: 0;
     }
   </style>
 </head>
 <body>
   <div class="widget" id="widget">
-    <div class="left">
+    <div class="top">
       <h2 id="title">🎉 디데이</h2>
       <div class="date" id="dateText"></div>
     </div>
-    <div class="right" id="countdown"></div>
+    <div class="bottom" id="countdown"></div>
   </div>
 
   <script>
@@ -59,7 +69,6 @@
 
     const params = getQueryParams();
 
-    // 기본값 설정
     const dateParam = params.date || "2025-08-15";
     const titleParam = params.title || "🎉 디데이";
 
@@ -69,27 +78,33 @@
 
     const bgColor = params.bgColor || "#fff";
     const fontFamily = params.fontFamily || "sans-serif";
-    const fontSize = params.fontSize || "16px";
 
-    // DOM 요소 가져오기
-    const targetDate = new Date(dateParam);
-    const countdownEl = document.getElementById("countdown");
-    const dateTextEl = document.getElementById("dateText");
+    const titleSize = params.titleSize || "20px";
+    const dateSize = params.dateSize || "14px";
+    const countdownSize = params.countdownSize || "28px";
+
     const titleEl = document.getElementById("title");
+    const dateTextEl = document.getElementById("dateText");
+    const countdownEl = document.getElementById("countdown");
     const widgetEl = document.getElementById("widget");
-    const body = document.body;
 
-    // 내용 적용
+    // 내용 설정
     titleEl.textContent = titleParam;
 
     // 스타일 적용
-    titleEl.style.color = colorTitle;
-    dateTextEl.style.color = colorDate;
-    countdownEl.style.color = colorCountdown;
-
     widgetEl.style.backgroundColor = bgColor;
     widgetEl.style.fontFamily = fontFamily;
-    widgetEl.style.fontSize = fontSize;
+
+    titleEl.style.color = colorTitle;
+    titleEl.style.fontSize = titleSize;
+
+    dateTextEl.style.color = colorDate;
+    dateTextEl.style.fontSize = dateSize;
+
+    countdownEl.style.color = colorCountdown;
+    countdownEl.style.fontSize = countdownSize;
+
+    const targetDate = new Date(dateParam);
 
     function updateCountdown() {
       const now = new Date();
@@ -111,7 +126,7 @@
     }
 
     updateCountdown();
-    setInterval(updateCountdown, 86400000);
+    setInterval(updateCountdown, 86400000); // 매일 갱신
   </script>
 </body>
 </html>
