@@ -5,7 +5,6 @@
   <title>D-Day 위젯</title>
   <style>
     body {
-      font-family: sans-serif;
       margin: 0;
       padding: 20px;
     }
@@ -31,7 +30,6 @@
 
     .left .date {
       font-size: 14px;
-      color: #666;
     }
 
     .right {
@@ -42,7 +40,7 @@
   </style>
 </head>
 <body>
-  <div class="widget">
+  <div class="widget" id="widget">
     <div class="left">
       <h2 id="title">🎉 디데이</h2>
       <div class="date" id="dateText"></div>
@@ -53,24 +51,45 @@
   <script>
     function getQueryParams() {
       const params = {};
-      window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+      window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (_, key, value) {
         params[key] = decodeURIComponent(value);
       });
       return params;
     }
 
     const params = getQueryParams();
-    const dateParam = params.date || "2025-08-15";  // 기본값
-    const titleParam = params.title || "🎉 디데이";
-    const colorParam = params.color || "#000";
 
+    // 기본값 설정
+    const dateParam = params.date || "2025-08-15";
+    const titleParam = params.title || "🎉 디데이";
+
+    const colorTitle = params.colorTitle || "#000";
+    const colorDate = params.colorDate || "#666";
+    const colorCountdown = params.colorCountdown || "#000";
+
+    const bgColor = params.bgColor || "#fff";
+    const fontFamily = params.fontFamily || "sans-serif";
+    const fontSize = params.fontSize || "16px";
+
+    // DOM 요소 가져오기
     const targetDate = new Date(dateParam);
     const countdownEl = document.getElementById("countdown");
     const dateTextEl = document.getElementById("dateText");
     const titleEl = document.getElementById("title");
+    const widgetEl = document.getElementById("widget");
+    const body = document.body;
 
+    // 내용 적용
     titleEl.textContent = titleParam;
-    countdownEl.style.color = colorParam;
+
+    // 스타일 적용
+    titleEl.style.color = colorTitle;
+    dateTextEl.style.color = colorDate;
+    countdownEl.style.color = colorCountdown;
+
+    widgetEl.style.backgroundColor = bgColor;
+    widgetEl.style.fontFamily = fontFamily;
+    widgetEl.style.fontSize = fontSize;
 
     function updateCountdown() {
       const now = new Date();
