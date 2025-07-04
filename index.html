@@ -11,7 +11,6 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
     }
 
     body {
@@ -19,18 +18,19 @@
       justify-content: center;
       align-items: center;
       font-family: sans-serif;
+      font-size: 16px;
     }
 
     .widget {
-      aspect-ratio: 1 / 1;
-      width: 90vw;
-      max-width: 400px;
-      padding: 20px;
+      width: 100vw;
+      height: 100vh;
+      padding: 32px;
       border: 2px solid #ccc;
       border-radius: 16px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      position: relative;
     }
 
     .top {
@@ -38,13 +38,22 @@
     }
 
     .bottom {
-      text-align: right;
+      position: absolute;
+      bottom: 32px;
+      right: 32px;
       font-weight: bold;
+      font-size: 32px;
+      margin: 0;
+      text-align: right;
     }
 
-    .top h2,
-    .top .date,
-    .bottom {
+    .top h2 {
+      font-size: 24px;
+      margin: 0;
+      margin-bottom: 12px;
+    }
+    .top .date {
+      font-size: 16px;
       margin: 0;
     }
   </style>
@@ -79,9 +88,6 @@
     const bgColor = params.bgColor || "#fff";
     const fontFamily = params.fontFamily || "sans-serif";
 
-    const titleSize = params.titleSize || "20px";
-    const dateSize = params.dateSize || "14px";
-    const countdownSize = params.countdownSize || "28px";
 
     const titleEl = document.getElementById("title");
     const dateTextEl = document.getElementById("dateText");
@@ -96,13 +102,10 @@
     widgetEl.style.fontFamily = fontFamily;
 
     titleEl.style.color = colorTitle;
-    titleEl.style.fontSize = titleSize;
 
     dateTextEl.style.color = colorDate;
-    dateTextEl.style.fontSize = dateSize;
 
     countdownEl.style.color = colorCountdown;
-    countdownEl.style.fontSize = countdownSize;
 
     const targetDate = new Date(dateParam);
 
