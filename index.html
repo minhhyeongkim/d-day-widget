@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>D-Day 위젯</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .widget {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      padding: 16px 20px;
+      max-width: 400px;
+    }
+
+    .left {
+      text-align: left;
+    }
+
+    .left h2 {
+      margin: 0 0 4px 0;
+      font-size: 20px;
+    }
+
+    .left .date {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .right {
+      font-size: 28px;
+      font-weight: bold;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget">
+    <div class="left">
+      <h2 id="title">🎉 디데이</h2>
+      <div class="date" id="dateText"></div>
+    </div>
+    <div class="right" id="countdown"></div>
+  </div>
+
+  <script>
+    function getQueryParams() {
+      const params = {};
+      window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        params[key] = decodeURIComponent(value);
+      });
+      return params;
+    }
+
+    const params = getQueryParams();
+    const dateParam = params.date || "2025-08-15";  // 기본값
+    const titleParam = params.title || "🎉 디데이";
+    const colorParam = params.color || "#000";
+
+    const targetDate = new Date(dateParam);
+    const countdownEl = document.getElementById("countdown");
+    const dateTextEl = document.getElementById("dateText");
+    const titleEl = document.getElementById("title");
+
+    titleEl.textContent = titleParam;
+    countdownEl.style.color = colorParam;
+
+    function updateCountdown() {
+      const now = new Date();
+      const diffTime = targetDate - now;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      const yyyy = targetDate.getFullYear();
+      const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
+      const dd = String(targetDate.getDate()).padStart(2, '0');
+      dateTextEl.textContent = `${yyyy}.${mm}.${dd}`;
+
+      if (diffDays > 0) {
+        countdownEl.textContent = `D-${diffDays}`;
+      } else if (diffDays === 0) {
+        countdownEl.textContent = "D-DAY!";
+      } else {
+        countdownEl.textContent = `D+${Math.abs(diffDays)}`;
+      }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 86400000);
+  </script>
+</body>
+</html>
